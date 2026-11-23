@@ -3,10 +3,12 @@ import json
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+import time
+from google.genai import errors
 
 load_dotenv()
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-MODEL = "gemini-3.5-flash-lite"
+MODEL = "gemini-3.1-flash-lite"
 
 # ---- التعليمات: قصيرة، لأن الشكل صار محدد في القالب ----
 instructions = """أنت نظام تصنيف رسائل عملاء لمتجر إلكتروني.
@@ -52,19 +54,37 @@ test_cases = [
 
 correct = 0
 
-for case in test_cases:
-    response = client.models.generate_content(
-        model=MODEL,
-        contents=case["message"],
-        config=types.GenerateContentConfig(
-            system_instruction=instructions,
-            temperature=0,
-            response_mime_type="application/json",
-            response_schema=schema,
-        ),
-    )
-    result = json.loads(response.text)
+correct = 0
+tested = 0
 
+for case in test_cases:
+    result = None
+
+    # نحاول ٣ مرات، وبين كل محاولة ننتظر ١٥ ثانية
+    for attempt in range(3):
+        try:
+            response = client.models.generate_content(
+                model=MODEL,
+                contents=case["message"],
+                config=types.GenerateContentConfig(
+                    system_instruction=instructions,
+                    temperature=0,
+                    response_mime_type="application/json",
+                    response_schema=schema,
+                ),
+            )
+            result = json.loads(response.text)
+            break  # نجحت، نطلع من حلقة المحاولات
+        except errors.ServerError:
+            print("   ⏳ السيرفر مشغول، أنتظر ١٥ ثانية وأعيد...")
+            time.sleep(13)
+
+    # إذا فشلت المحاولات الثلاث، نتخطى الرسالة وما نحسبها
+    if result is None:
+        print("⚠️ ما انختبرت:", case["message"])
+        continue
+
+    tested += 1
     if result["category"] == case["expected"]:
         correct += 1
         mark = "✅"
@@ -74,5 +94,4 @@ for case in test_cases:
     print(mark, case["message"])
     print("   النموذج:", result["category"], "| المتوقع:", case["expected"], "| الأولوية:", result["priority"])
 
-accuracy = correct / len(test_cases) * 100
-print(f"\nالدقة: {correct} من {len(test_cases)} = {accuracy:.0f}%")
+print(f"\nالدقة: {correct} من {tested} اختُبرت (من أصل {len(test_cases)})")
