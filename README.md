@@ -24,6 +24,7 @@ A simple Python script that sends a question to Google's Gemini model through it
 - `list_models.py`: lists the models available for your API key
 
 ## What I learned
-- 
-- 
--
+- How to call an AI model (Gemini) from Python using an API
+- How to keep API keys secret using a `.env` file and `.gitignore`
+- How to connect a local project to GitHub and push it safely
+- How to read error messages (4xx = my mistake, 5xx = server issue)
