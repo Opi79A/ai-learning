@@ -28,3 +28,4 @@ A simple Python script that sends a question to Google's Gemini model through it
 - How to keep API keys secret using a `.env` file and `.gitignore`
 - How to connect a local project to GitHub and push it safely
 - How to read error messages (4xx = my mistake, 5xx = server issue)
+- How to list the available models for my API key and choose the right one
