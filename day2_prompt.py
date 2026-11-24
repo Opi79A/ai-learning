@@ -5,7 +5,7 @@ from google.genai import types
 
 load_dotenv()
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-MODEL = "gemini-3.5-flash-lite"
+MODEL = "gemini-3.6-flash"
 messages = [
     "السلام عليكم، حابة أعرف كم سعر بوكس العناية بالبشرة؟ لأن الرابط الموجود في حسابكم أحاول أفتحه من أمس لكنه ما يشتغل معي، ممكن تتأكدون منه وترسلون لي رابط صحيح؟",
 
