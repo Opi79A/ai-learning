@@ -76,6 +76,9 @@ for case in test_cases:
                     response_schema=schema,
                 ),
             )
+            if response.text is None:
+                print("   ⚠️ النموذج ما رجّع أي نص")
+                break
             result = json.loads(response.text)
             break  # نجحت، نطلع من حلقة المحاولات
         except errors.ServerError:
