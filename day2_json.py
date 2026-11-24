@@ -5,6 +5,7 @@ from google import genai
 from google.genai import types
 import time
 from google.genai import errors
+import csv
 
 load_dotenv()
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
@@ -52,10 +53,12 @@ test_cases = [
     {"message": "وش طرق الدفع عندكم؟", "expected": "استفسار"},
 ]
 
-correct = 0
+
 
 correct = 0
 tested = 0
+
+rows = []
 
 for case in test_cases:
     result = None
@@ -79,6 +82,8 @@ for case in test_cases:
             print("   ⏳ السيرفر مشغول، أنتظر ١٥ ثانية وأعيد...")
             time.sleep(13)
 
+            
+
     # إذا فشلت المحاولات الثلاث، نتخطى الرسالة وما نحسبها
     if result is None:
         print("⚠️ ما انختبرت:", case["message"])
@@ -94,4 +99,19 @@ for case in test_cases:
     print(mark, case["message"])
     print("   النموذج:", result["category"], "| المتوقع:", case["expected"], "| الأولوية:", result["priority"])
 
+    rows.append({
+        "الرسالة": case["message"],
+        "المتوقع": case["expected"],
+        "النموذج": result["category"],
+        "الأولوية": result["priority"],
+        "النتيجة": "صح" if mark == "✅" else "غلط",
+    })
+
 print(f"\nالدقة: {correct} من {tested} اختُبرت (من أصل {len(test_cases)})")
+
+# حفظ النتائج في ملف CSV
+with open("results.csv", "w", newline="", encoding="utf-8") as csvfile:
+    fieldnames = ["الرسالة", "المتوقع", "النموذج", "الأولوية", "النتيجة"]
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    writer.writeheader()
+    writer.writerows(rows)
