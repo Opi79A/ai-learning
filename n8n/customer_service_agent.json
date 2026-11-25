@@ -1,0 +1,234 @@
+{
+  "name": "customer service agent",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "1eeb1177-cd4a-46b9-87ea-e4d7ed865e10",
+      "name": "When chat message received",
+      "webhookId": "b28cca23-7ff7-4afd-b7f5-51590a6e13c8"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "أنت وكيل خدمة عملاء لمتجر \"صوتكِ الواثق\" على سلة. ترد بالعربي بلهجة ودودة ومختصرة.\n\nالقواعد:\n- إذا العميل يسأل عن المنتج أو السعر أو الشحن، جاوب فقط من معلومات المتجر تحت.\n- إذا العميل يبغى يشتري: لازم تعرف اسمه وعدد النسخ. إذا ناقص شي اسأله. إذا عندك الاثنين استخدم أداة create_order.\n- لا تقول \"تم تسجيل طلبك\" إلا بعد ما تستخدم create_order فعلاً.\n- إذا العميل زعلان أو عنده مشكلة دفع أو يبغى يكلم موظف: استخدم أداة escalate_to_human، وبعدها قل له إنه تم تحويله.\n- إذا ما لقيت الجواب في المعلومات، قل: \"ما عندي معلومة عن هذا، تقدر تتواصل معنا ونساعدك.\"\n- لا تخترع أي معلومة مو مكتوبة صراحة.\n- لا تذكر أي رابط أو بريد أو طريقة توصيل أو وعد، إلا إذا مكتوب حرفياً في معلومات المتجر.\n- لا تكتب أي نص بين أقواس مثل [رابط].\n\nمعلومات المتجر:\nمعلومات متجر \"صوتكِ الواثق\"\n(بيانات تجريبية للتدريب: السعر والسياسات مقترحة، عدّليها قبل أي استخدام حقيقي)\n\n== المنتج ==\nاسم المنتج: برنامج \"صوتكِ الواثق\"\nنوع المنتج: برنامج رقمي بصيغة PDF باللغة العربية\nعدد الصفحات: 148 صفحة\nالمدة: برنامج تدريبي مدته 8 أسابيع\nالسعر: 149 ريال سعودي\nالمتجر: يُباع عبر متجرنا على منصة سلة\n\n== محتوى البرنامج ==\n- برنامج لبناء الثقة في التحدث، مقسم على 8 أسابيع.\n- يحتوي على 56 بنك أسئلة، كل بنك مخصص لموضوع معين.\n- مجموع الأسئلة 448 سؤالاً، تتدرج في الصعوبة من السهل إلى الأصعب.\n- مناسب لمن يريد تحسين ثقته في الكلام أمام الآخرين، في الدراسة أو العمل أو الحياة اليومية.\n\n== طريقة الشراء والاستلام ==\n- الشراء يتم من متجرنا على منصة سلة.\n- طرق الدفع: مدى، أبل باي، والبطاقات الائتمانية المتاحة في سلة.\n- المنتج رقمي، ولا يوجد شحن أو توصيل لنسخة مطبوعة.\n- بعد إتمام الدفع، يصل رابط تحميل ملف PDF مباشرة على البريد الإلكتروني المسجل في الطلب.\n- يمكن أيضاً تحميل الملف من صفحة \"طلباتي\" في حسابك على المتجر.\n\n== سياسة الاسترجاع ==\n- لأن المنتج رقمي ويُحمَّل فوراً، لا يمكن استرجاع المبلغ بعد تحميل الملف.\n- إذا لم يصلك رابط التحميل، أو وصل الملف تالفاً أو لا يفتح، نرسل لك نسخة جديدة مجاناً.\n\n== أسئلة شائعة ==\nس: متى يوصلني البرنامج؟\nج: فوراً بعد الدفع، على بريدك الإلكتروني المسجل في الطلب.\n\nس: ما وصلني رابط التحميل، وش أسوي؟\nج: تأكد من مجلد الرسائل غير المرغوب فيها (Spam)، أو حمّل الملف من صفحة \"طلباتي\" في المتجر. وإذا ما لقيته، تواصل معنا ونرسله لك.\n\nس: هل البرنامج مناسب للمبتدئين؟\nج: نعم، الأسئلة تبدأ من السهل وتتدرج، فهو مناسب لمن يبدأ من الصفر.\n\nس: هل أقدر أطبع البرنامج؟\nج: نعم، الملف PDF ويمكن طباعته للاستخدام الشخصي.\n\nس: هل أقدر أشارك الملف مع غيري؟\nج: لا، البرنامج للاستخدام الشخصي فقط، ولا يجوز مشاركته أو إعادة بيعه.\n\nس: كم سعر البرنامج؟\nج: سعر البرنامج 149 ريال سعودي."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "32ecdf69-854b-454c-9c11-afdf2d24a741",
+      "name": "AI Agent",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.1-flash-lite",
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        208
+      ],
+      "id": "80c3ab3c-384c-48f8-9f48-4cdee779f788",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "kdgj20JfelCKr0V7",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        240,
+        208
+      ],
+      "id": "029efe32-359e-48fa-bbc3-582d10edc51a",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "tLggDxUDO3kO8abE",
+          "mode": "list",
+          "cachedResultName": "orders",
+          "cachedResultUrl": "/projects/bmqqDODODLWBKyqR/datatables/tLggDxUDO3kO8abE"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "customer_name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('customer_name', `اسم العميل كما ذكره`, 'string') }}",
+            "quantity": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('quantity', `عدد النسخ المطلوبة، رقم فقط`, 'number') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "customer_name",
+              "displayName": "customer_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "quantity",
+              "displayName": "quantity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1.1,
+      "position": [
+        384,
+        208
+      ],
+      "id": "a1d57dfe-0b5d-4af8-8b20-2c4d5ab1d15c",
+      "name": "create_order"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "6oav4sswXFqPUVjm",
+          "mode": "list",
+          "cachedResultName": "escalations",
+          "cachedResultUrl": "/projects/bmqqDODODLWBKyqR/datatables/6oav4sswXFqPUVjm"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "reason": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('reason', `سبب التحويل باختصار، بكلام العميل نفسه بدون تفسير`, 'string') }}"
+          },
+          "matchingColumns": [
+            "reason"
+          ],
+          "schema": [
+            {
+              "id": "reason",
+              "displayName": "reason",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1.1,
+      "position": [
+        528,
+        208
+      ],
+      "id": "244bf492-786e-4f52-80ed-16fd603e4f4f",
+      "name": "escalate_to_human"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "create_order": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "escalate_to_human": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "87e3500a-c211-4737-93c8-109f405e0614",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "034ebb80bdf901eff4a073e69ab38d7601ba52cce0308ab7afa84aadd88db6c3"
+  },
+  "nodeGroups": [],
+  "id": "fyIURLgAqsrjfD1v",
+  "tags": []
+}
